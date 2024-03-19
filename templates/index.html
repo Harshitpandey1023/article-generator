@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator</title>
+    <!-- Include Tailwind CSS styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        .article-box {
+            border: 1px solid #212325;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .loading-spinner {
+             border: 4px solid rgba(4, 3, 3, 0.3);
+             border-top: 4px solid #060d12;
+             border-radius: 50%;
+             width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: block; 
+    }
+
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-8">Article Generator</h1>
+        
+        <!-- Article generation form -->
+        <form action="/" method="post" class="mb-8" id="articleForm">
+            <label for="topic" class="mr-2">Enter the topic for the article:</label>
+            <input type="text" id="topic" name="topic" required class="border p-2 rounded">
+
+            
+            <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ml-2">
+                Generate Article
+            </button>
+            <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2 " onclick="cancelGeneration()">
+                Cancel
+            </button>
+            
+
+        </form>
+
+        <!-- Generated article box -->
+        {% if topic and generated_article is not none %}
+            <div class="article-box">
+                <h2 class="text-xl font-bold mb-4">Generated Article for {{ topic }}:</h2>
+                <p id="generatedArticle">{{ generated_article }}</p>
+            </div>
+        {% elif topic and generated_article is none %}
+            <!-- Loading spinner while generating article -->
+            <div class="loading-spinner"></div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript for canceling article generation -->
+    <script>
+        function cancelGeneration() {
+            // Disable the form to prevent further submissions
+            document.getElementById("articleForm").setAttribute("disabled", "true");
+
+            // Hide the loading spinner
+            document.querySelector(".loading-spinner").style.display = "none";
+
+            // Clear the generated article
+            document.getElementById("generatedArticle").innerText = "Article generation canceled.";
+        }
+    </script>
+</body>
+</html>
